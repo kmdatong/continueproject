@@ -1,0 +1,41 @@
+﻿@using WebApplication3.Domains;
+@model IEnumerable<DtFile>
+@{
+    ViewData["Title"] = "List";
+}
+
+<a class="btn btn-success" style="margin:20px 0px 0 0px;" href="@Url.Action("Add")">添加文件</a>
+<a class="btn btn-success" style="margin:20px 0px 0 0px;" href="@Url.Action("FormDataTest")">添加文件(formData)</a>
+<table style="margin-top:30px;" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>原文件名</th>
+            <th>文件名</th>
+            <th>文件后缀</th>
+            <th>文件长度</th>
+            <th>文件路径</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.OldName</td>
+            <td>@item.NewName</td>
+            <td>@item.FileExt</td>
+            <td>@item.Length</td>
+            <td>@item.Path</td>
+            <td><a class="btn btn-link" href="@Url.Action("Delete",new { id=item.Id})">删除</a>
+                <a class="btn btn-link" href="@Url.Action("DownFlie",new { id=item.Id})">文件下载</a>
+            </td>
+        
+        </tr>
+        }
+
+
+    </tbody>
+</table>
+

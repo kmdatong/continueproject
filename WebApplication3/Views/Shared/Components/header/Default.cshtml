@@ -1,0 +1,27 @@
+﻿
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">首页</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav" style="float:right;margin-right:60px;">
+           
+            @if (ViewBag.LoginName != null)
+            {
+                <li><a href="#">@ViewBag.LoginName 你好！</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="LoginOut">退出</a></li>
+            }
+            else
+            {
+
+                <li><a asp-area="" asp-controller="Account" asp-action="Login">登录</a></li>
+            }
+        </ul>
+    </div>
+</div>

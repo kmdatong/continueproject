@@ -1,0 +1,32 @@
+﻿
+@model IEnumerable<AccountModel>
+@{
+    ViewData["Title"] = "List";
+}
+
+<a  class="btn btn-success"  style="margin:20px 0px 0 0px;"  href="@Url.Action("edit")">添加用户</a>
+<table style="margin-top:30px;" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>年龄</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Age</td>
+            <td>@item.Remark</td>
+            <td><a class="btn btn-link" href="@Url.Action("Edit",new { id=item.Id})">编辑</a></td>
+        </tr>
+        }
+
+
+    </tbody>
+</table>

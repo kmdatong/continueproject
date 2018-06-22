@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "FormDataTest";
+}
+<style>
+    .forFlow ul li {
+        display: inline-block;
+        background-color: #99CCFF;
+        font-size: 20px;
+        line-height: 30px;
+        width: 100%;
+    }
+</style>
+<h2>使用formData 上传文件</h2>
+<form enctype="multipart/form-data">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>选择文件</p>
+            <input type="file" id="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="button" onclick="ajaxupload()" value="ajax上传" />
+            <input type="button" onclick="formdataupload()" value="formdata对象上 传" />
+            <input type="button" onclick="uploadfile()" value="上 传" />
+        </div>
+    </div>
+</form>
+
+<script>
+    function ajaxupload() {
+        var form = new FormData(document.querySelector("form"));
+        $.ajax({
+            url: "@Url.Action("UploadFile")",
+            type: "POST",
+            data: form,
+            processData: false,  // 不处理数据
+            contentType: false   // 不设置内容类型
+        });
+    }
+</script>
+
+<script>
+    function formdataupload() {
+
+        var formdata = new FormData(document.querySelector("form"));
+        var requst = new XMLHttpRequest();
+        requst.open("post", "@Url.Action("UploadFile")");
+        requst.send(formdata);
+    }
+</script>

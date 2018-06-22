@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication3</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        @await Component.InvokeAsync("header")
+    </nav>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="nav nav-pills nav-stacked" style="float:right;margin-top:60px;">
+                    <li><a asp-area="" asp-controller="home" asp-action="index">首页</a></li>
+                    <li><a asp-area="" asp-controller="account" asp-action="list">用户管理</a></li>
+                    <li><a asp-area="" asp-controller="FileMgmt" asp-action="list">文件管理</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
+       
+        <hr />
+        <footer>
+            <p>&copy; 2018 - WebApplication3</p>
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

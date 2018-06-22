@@ -1,0 +1,73 @@
+USE [datong]
+GO
+/****** Object:  Table [dbo].[dtFile]    Script Date: 2018/6/22 23:57:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dtFile](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[OldName] [nvarchar](50) NOT NULL,
+	[NewName] [nvarchar](50) NOT NULL,
+	[FileExt] [nvarchar](50) NOT NULL,
+	[Type] [int] NOT NULL,
+	[Length] [int] NOT NULL,
+	[Path] [nvarchar](128) NOT NULL,
+ CONSTRAINT [PK_dtFile] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[dtuser]    Script Date: 2018/6/22 23:57:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dtuser](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Age] [int] NOT NULL,
+	[Remark] [nvarchar](50) NOT NULL,
+	[Password] [nvarchar](50) NOT NULL,
+	[LoginName] [nvarchar](50) NULL,
+ CONSTRAINT [PK_user] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET IDENTITY_INSERT [dbo].[dtFile] ON 
+
+GO
+INSERT [dbo].[dtFile] ([Id], [OldName], [NewName], [FileExt], [Type], [Length], [Path]) VALUES (5, N'2615772.zip', N'e0fecacab1d7404e8828264682530100', N'.zip', 1, 40212, N'/Files/e0fecacab1d7404e8828264682530100.zip')
+GO
+INSERT [dbo].[dtFile] ([Id], [OldName], [NewName], [FileExt], [Type], [Length], [Path]) VALUES (6, N'W020180228531410514317.doc', N'7504b20a226148c6a32ac0a27f522323', N'.doc', 1, 13312, N'/Files/7504b20a226148c6a32ac0a27f522323.doc')
+GO
+INSERT [dbo].[dtFile] ([Id], [OldName], [NewName], [FileExt], [Type], [Length], [Path]) VALUES (7, N'webwxgetmsgimg.jpg', N'75e116bd38b44087a0070ff64627b090', N'.jpg', 1, 93192, N'/Files/75e116bd38b44087a0070ff64627b090.jpg')
+GO
+INSERT [dbo].[dtFile] ([Id], [OldName], [NewName], [FileExt], [Type], [Length], [Path]) VALUES (8, N'《如何阅读一本书》（美）莫提默·J·艾德勒 - 无背景.pdf', N'c9a20787ac854d0594c1894482e3bf78', N'.pdf', 4, 15681634, N'/Files/c9a20787ac854d0594c1894482e3bf78.pdf')
+GO
+INSERT [dbo].[dtFile] ([Id], [OldName], [NewName], [FileExt], [Type], [Length], [Path]) VALUES (12, N'最低合格分数线、最低合格线上且招录计划六倍范围内人员及首批资格复审人员名单ererer.xlsx', N'd9f39bb4726f4cc79fed71790a024af4', N'.xlsx', 4, 1583491, N'/Files/d9f39bb4726f4cc79fed71790a024af4.xlsx')
+GO
+SET IDENTITY_INSERT [dbo].[dtFile] OFF
+GO
+SET IDENTITY_INSERT [dbo].[dtuser] ON 
+
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (18, N'rqwer', 123, N'qwwerwer', N'123456', N'datong1')
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (19, N'rqwer2', 301, N'qwwerwersdfsadf', N'123456', N'datong2')
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (20, N'rqwer12', 12, N'qwwerwe121212r', N'123456', N'datong3')
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (21, N'老王', 24, N'大老王', N'123456', N'datong4')
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (24, N'大通5', 23, N'去二分二反而更', N'123456', N'datong5')
+GO
+INSERT [dbo].[dtuser] ([Id], [Name], [Age], [Remark], [Password], [LoginName]) VALUES (29, N'大通8', 80, N'儿童二提味儿提味儿', N'123456', N'datong8')
+GO
+SET IDENTITY_INSERT [dbo].[dtuser] OFF
+GO

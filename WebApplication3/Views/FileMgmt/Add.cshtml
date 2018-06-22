@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+}
+<h2>文件上传</h2>
+<form method="post" enctype="multipart/form-data" action="@Url.Action("UploadFile")">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>选择文件</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="上 传" />
+        </div>
+    </div>
+</form>
+
