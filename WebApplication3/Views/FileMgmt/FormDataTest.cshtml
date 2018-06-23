@@ -26,6 +26,11 @@
             <input type="button" onclick="uploadfile()" value="上 传" />
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-10">
+           <p id="progress"  class="text-center"  style="display:inline-block;line-height:20px;background-color:aqua;color:#000000;"><span style="float:left;margin-left:300px;" id="scjd"></span></p>
+        </div>
+    </div>
 </form>
 
 <script>
@@ -36,17 +41,42 @@
             type: "POST",
             data: form,
             processData: false,  // 不处理数据
-            contentType: false   // 不设置内容类型
+            contentType: false,   // jQuery不要去设置Content-Type请求头
+            success: function (data) {
+                layer.msg("操作成功",{ time: 1000 }, function () {
+                    window.location.href = "@Url.Action("list")";
+                });
+            }
+        }).fail(function () {
+            layer.msg("操作失败");
         });
     }
 </script>
 
 <script>
     function formdataupload() {
-
+        var progress = document.getElementById("progress");
         var formdata = new FormData(document.querySelector("form"));
         var requst = new XMLHttpRequest();
         requst.open("post", "@Url.Action("UploadFile")");
+       
+        //上传进度
+        requst.upload.onprogress = function (ev) {
+            var percent = parseInt((ev.loaded / ev.total) * 100) + '%';
+           
+            console.log(percent);
+
+            progress.style.width = percent;
+            $("#scjd").text(percent);
+        };
         requst.send(formdata);
+        //
+        @*requst.onreadystatechange = function () {
+            if (requst.readyState == 4 && requst.status == 200) {
+                layer.msg("操作成功",{ time: 1000 }, function () {
+                    window.location.href = "@Url.Action("list")";
+                });
+            }
+        };*@
     }
 </script>

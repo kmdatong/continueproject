@@ -49,10 +49,11 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadFile(List<IFormFile> files)
+        [RequestSizeLimit(1000_000_000)]
+        public JsonResult UploadFile(List<IFormFile> files)
         {
             string name = Guid.NewGuid().ToString("n");
-            string filePath = _hostingEnvironment.WebRootPath+@"/Files/";
+            string filePath = _hostingEnvironment.WebRootPath+@"/UploadFiles/";
 
             foreach (var formFile in files)
             {
@@ -70,7 +71,7 @@ namespace WebApplication3.Controllers
                         entity.Length =(Int32) formFile.Length;
                         entity.NewName = name;
                         entity.OldName = formFile.FileName;
-                        entity.Path = @"/Files/"+ name + ext;
+                        entity.Path = @"/UploadFiles/" + name + ext;
                         entity.Type = 4;
                         var extlist = FIleTypeServer.GetFileTypeList();
                         foreach (var item in extlist)
@@ -89,7 +90,7 @@ namespace WebApplication3.Controllers
                 }
             }
 
-            return RedirectToAction("List");
+            return Json(new { flag=true});
         }
 
         public ActionResult Delete(int id)
