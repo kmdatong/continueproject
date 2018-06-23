@@ -14,7 +14,7 @@
             <th>文件名</th>
             <th>文件后缀</th>
             <th>文件长度</th>
-            <th>文件路径</th>
+            @*<th>文件路径</th>*@
             <th>操作</th>
         </tr>
     </thead>
@@ -27,14 +27,15 @@
             <td>@item.NewName</td>
             <td>@item.FileExt</td>
             <td>@item.Length</td>
-            <td>@item.Path</td>
-            <td><a class="btn btn-link" href="@Url.Action("Delete",new { id=item.Id})">删除</a>
+            @*<td>@item.Path</td>*@
+            <td>
+                <a class="btn btn-link" onclick='return confirm("确定删除文件吗？")' href="@Url.Action("Delete",new { id=item.Id})">删除</a>
                 <a class="btn btn-link" href="@Url.Action("DownFlie",new { id=item.Id})">文件下载</a>
+                <a class="btn btn-link" href="@Url.Action("BreakpointDownload",new { id=item.Id})">片段下载</a>
             </td>
-        
+            
         </tr>
         }
-
 
     </tbody>
 </table>

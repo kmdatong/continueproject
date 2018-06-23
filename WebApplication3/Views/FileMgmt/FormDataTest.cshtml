@@ -12,23 +12,25 @@
     }
 </style>
 <h2>使用formData 上传文件</h2>
+<a class="btn btn-success" href="@Url.Action("List")">文件列表</a>
 <form enctype="multipart/form-data">
     <div class="form-group">
         <div class="col-md-10">
-            <p>选择文件</p>
-            <input type="file" id="file" name="files" multiple />
+
+            <input type="file" id="myfile" name="files" multiple />
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
             <input type="button" onclick="ajaxupload()" value="ajax上传" />
             <input type="button" onclick="formdataupload()" value="formdata对象上 传" />
-            <input type="button" onclick="uploadfile()" value="上 传" />
+            <input type="button" onclick="uploadfile()" value="模拟表单上传" />
+            <input type="button" onclick="fragmentupload()" value="分片上传" />
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-           <p id="progress"  class="text-center"  style="display:inline-block;line-height:20px;background-color:aqua;color:#000000;"><span style="float:left;margin-left:300px;" id="scjd"></span></p>
+            <p id="progress" class="text-center" style="display:inline-block;line-height:20px;background-color:aqua;color:#000000;"><span style="float:left;margin-left:300px;" id="scjd"></span></p>
         </div>
     </div>
 </form>
@@ -59,11 +61,11 @@
         var formdata = new FormData(document.querySelector("form"));
         var requst = new XMLHttpRequest();
         requst.open("post", "@Url.Action("UploadFile")");
-       
+
         //上传进度
         requst.upload.onprogress = function (ev) {
             var percent = parseInt((ev.loaded / ev.total) * 100) + '%';
-           
+
             console.log(percent);
 
             progress.style.width = percent;
@@ -80,3 +82,87 @@
         };*@
     }
 </script>
+
+<script>
+    //模拟表单上传
+    function uploadfile() {
+
+        var form = new FormData();
+        //form.append("files", document.getElementById("myfile").files[0]); // 将文件加入fordata中
+        form.append("files", $("#myfile").get(0).files[0]); //jquery 将文件加入fordata中
+
+     $.ajax({
+            url: "@Url.Action("UploadFile")",
+            type: "POST",
+            data: form,
+            processData: false,  // 不处理数据
+            contentType: false,   // jQuery不要去设置Content-Type请求头
+            success: function (data) {
+                layer.msg("操作成功",{ time: 1000 }, function () {
+                    window.location.href = "@Url.Action("list")";
+                });
+            }
+        }).fail(function () {
+            layer.msg("操作失败");
+        });
+
+    }
+</script>
+
+
+<script>
+    //分片上传
+    function fragmentupload() {
+        
+        var blackSize = 1 * 1000 * 1000;// 1mb
+        var skip = 0;
+        upload(blackSize, skip,"");
+    }
+
+    function upload(blackSize, skip, tempDirectory) {
+        var file = document.getElementById("myfile").files[0];
+        var formdata = new FormData();
+        var nextSize = Math.min((skip + 1) * blackSize, file.size);//本次上传到某个位置
+        var filedata = file.slice(skip * blackSize, nextSize);//获取本次上传的文件块
+        formdata.append("file", filedata);
+        formdata.append("tempDirectory", tempDirectory);
+        formdata.append("skip", skip);
+         $.ajax({
+            url: "@Url.Action("FragmentUpload")",
+            type: "POST",
+             data: formdata,
+            processData: false,  // 不处理数据
+            contentType: false,   // jQuery不要去设置Content-Type请求头
+             success: function (data) {
+                 if (nextSize >= file.size) {
+                    
+                     console.log(nextSize + ":" + file.size);
+                     mergeFiles(file.name, data.tempDirectory);
+                 } else {
+                     skip++;
+                     upload(blackSize, skip, data.tempDirectory);
+                     console.log("第" + skip+"块文件");
+                 }
+                
+             }
+         }).fail(function () {
+                 layer.msg("操作失败");
+             });
+    }
+
+    //合并文件
+    function mergeFiles(oldName, tempDirectory) {
+        $.post("@Url.Action("MergeFiles")", { oldName: oldName, tempDirectory: tempDirectory }, function () {
+
+        }).success(function () {
+             layer.msg("上传完毕", { time: 1000 }, function () {
+                         window.location.href = "@Url.Action("list")";
+                     });
+            }).fail(function () {
+                layer.msg("文件合并失败");
+            });
+
+    }
+</script>
+
+
