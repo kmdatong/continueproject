@@ -36,6 +36,8 @@
 </form>
 
 <script>
+    // 普通表单提交上传
+    var progress = document.getElementById("progress");
     function ajaxupload() {
         var form = new FormData(document.querySelector("form"));
         $.ajax({
@@ -44,6 +46,21 @@
             data: form,
             processData: false,  // 不处理数据
             contentType: false,   // jQuery不要去设置Content-Type请求头
+            xhr: function () { //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数    
+                myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) { //检查upload属性是否存在    
+                    //绑定progress事件的回调函数    
+                    myXhr.upload.onprogress = function (ev) {
+                        var percent = parseInt((ev.loaded / ev.total) * 100) + '%';
+
+                        console.log(percent);
+
+                        progress.style.width = percent;
+                        $("#scjd").text(percent);
+                    };
+                }
+                return myXhr; //xhr对象返回给jQuery使用    
+            }, 
             success: function (data) {
                 layer.msg("操作成功",{ time: 1000 }, function () {
                     window.location.href = "@Url.Action("list")";
@@ -56,6 +73,7 @@
 </script>
 
 <script>
+    //利用表单创建formdata对象 上传
     function formdataupload() {
         var progress = document.getElementById("progress");
         var formdata = new FormData(document.querySelector("form"));
@@ -73,18 +91,19 @@
         };
         requst.send(formdata);
         //
-        @*requst.onreadystatechange = function () {
+        requst.onreadystatechange = function () {
             if (requst.readyState == 4 && requst.status == 200) {
                 layer.msg("操作成功",{ time: 1000 }, function () {
-                    window.location.href = "@Url.Action("list")";
+                    //window.location.href = "@Url.Action("list")";
                 });
             }
-        };*@
+        };
     }
 </script>
 
 <script>
     //模拟表单上传
+    var progress = document.getElementById("progress");
     function uploadfile() {
 
         var form = new FormData();
@@ -97,6 +116,21 @@
             data: form,
             processData: false,  // 不处理数据
             contentType: false,   // jQuery不要去设置Content-Type请求头
+             xhr: function () { //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数    
+                 myXhr = $.ajaxSettings.xhr();
+                 if (myXhr.upload) { //检查upload属性是否存在    
+                     //绑定progress事件的回调函数    
+                     myXhr.upload.onprogress = function (ev) {
+                         var percent = parseInt((ev.loaded / ev.total) * 100) + '%';
+
+                         console.log(percent);
+
+                         progress.style.width = percent;
+                         $("#scjd").text(percent);
+                     };
+                 }
+                 return myXhr; //xhr对象返回给jQuery使用    
+             }, 
             success: function (data) {
                 layer.msg("操作成功",{ time: 1000 }, function () {
                     window.location.href = "@Url.Action("list")";
@@ -109,13 +143,13 @@
     }
 </script>
 
-
 <script>
+    var progress = document.getElementById("progress");
     //分片上传
     function fragmentupload() {
         
         var blackSize = 1 * 1000 * 1000;// 1mb
-        var skip = 0;
+        var skip = 0.0;
         upload(blackSize, skip,"");
     }
 
@@ -134,14 +168,18 @@
             processData: false,  // 不处理数据
             contentType: false,   // jQuery不要去设置Content-Type请求头
              success: function (data) {
+                 
+                 skip++;
+                 // 显示进度条
+                 onprogress(skip, blackSize, file.size)
                  if (nextSize >= file.size) {
                     
-                     console.log(nextSize + ":" + file.size);
                      mergeFiles(file.name, data.tempDirectory);
+                     
                  } else {
-                     skip++;
                      upload(blackSize, skip, data.tempDirectory);
-                     console.log("第" + skip+"块文件");
+                     console.log("第" + skip + "块文件");
+                    
                  }
                 
              }
@@ -156,12 +194,22 @@
 
         }).success(function () {
              layer.msg("上传完毕", { time: 1000 }, function () {
-                         window.location.href = "@Url.Action("list")";
+                        // window.location.href = "@Url.Action("list")";
                      });
             }).fail(function () {
                 layer.msg("文件合并失败");
             });
 
+    }
+
+    // 显示进度
+    function onprogress(skip, blackSize, totalLength) {
+        var percent = (parseFloat(skip) * blackSize / totalLength) * 100;
+        percent = skip * blackSize >= totalLength ? 100 : percent.toFixed();
+        console.log(skip * blackSize + " : " + totalLength);
+
+        progress.style.width = percent + '%';
+        $("#scjd").text(percent + '%');
     }
 </script>
 

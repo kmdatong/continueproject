@@ -232,16 +232,91 @@ namespace WebApplication3.Controllers
             string filePath = _hostingEnvironment.WebRootPath + @"/" + entity.Path;
 
             StringValues range = Response.Headers["Range"]; ;
+            Response.Headers.Add("Accept-Ranges", "0-" + blackSize);
+            
+           
+        }
 
-            if (string.IsNullOrWhiteSpace(range))
+        /// <summary>
+        /// 断点下载
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="fullpath"></param>
+        /// <returns></returns>
+        public async Task RangeDownload(int id)
+        {
+            var entity = _fileMgmt.GetById(id);
+            string fullpath = _hostingEnvironment.WebRootPath + @"/" + entity.Path;
+            long size, start, end, length = 1 * 1000 * 1000, fp = 0;
+            using (StreamReader reader = new StreamReader(System.IO.File.OpenRead(fullpath)))
             {
-                Response.Headers.Add("Range",string.Format("bytes={0}-{1}/{2}",begin,blackSize,entity.Length));
+
+                size = reader.BaseStream.Length;
+                start = 0;
+                end = size - 1;
+                length = size;
+                
+                Response.Headers.Add("Accept-Ranges", "0-" + size);
+                
+
+                if (!String.IsNullOrEmpty(Request.Headers["HTTP_RANGE"]))
+                {
+                    long anotherStart = start;
+                    long anotherEnd = end;
+                    string[] arr_split = Request.Headers["HTTP_RANGE"].FirstOrDefault().Split(new char[] { Convert.ToChar("=") });
+                    string range = arr_split[1];
+
+                    // Make sure the client hasn't sent us a multibyte range
+                    if (range.IndexOf(",") > -1)
+                    {
+                        // (?) Shoud this be issued here, or should the first
+                        // range be used? Or should the header be ignored and
+                        // we output the whole content?
+                        Response.Headers.Add("Content-Range", "bytes " + start + "-" + end + "/" + size);
+                        Response.StatusCode = 416;
+                        Response.StatusCode = 416;
+                        await Response.WriteAsync("Requested Range Not Satisfiable");
+                    }
+
+                    if (range.StartsWith("-"))
+                    {
+                        // The n-number of the last bytes is requested
+                        anotherStart = size - Convert.ToInt64(range.Substring(1));
+                    }
+                    else
+                    {
+                        arr_split = range.Split(new char[] { Convert.ToChar("-") });
+                        anotherStart = Convert.ToInt64(arr_split[0]);
+                        long temp = 0;
+                        anotherEnd = (arr_split.Length > 1 && Int64.TryParse(arr_split[1].ToString(), out temp)) ? Convert.ToInt64(arr_split[1]) : size;
+                    }
+                    /* Check the range and make sure it's treated according to the specs.
+                     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+                     */
+                    // End bytes can not be larger than $end.
+                    anotherEnd = (anotherEnd > end) ? end : anotherEnd;
+                    // Validate the requested range and return an error if it's not correct.
+                    if (anotherStart > anotherEnd || anotherStart > size - 1 || anotherEnd >= size)
+                    {
+
+                        Response.Headers.Add("Content-Range", "bytes " + start + "-" + end + "/" + size);
+                        Response.StatusCode = 416;
+                       await  Response.WriteAsync("Requested Range Not Satisfiable");
+                    }
+                    start = anotherStart;
+                    end = anotherEnd;
+
+                    length = end - start + 1; // Calculate new content length
+                    fp = reader.BaseStream.Seek(start, SeekOrigin.Begin);
+                    Response.StatusCode = 206;
+                }
             }
-                int fileLength = entity.Length;
-              
-                Response.ContentType = "application/octet-stream";
-                Response.Headers.Add("Content-Disposition", "attachment;filename=" + System.IO.Path.GetFileName(filePath));
-                System.Web.http
+            // Notify the client the byte range we'll be outputting
+            Response.Headers.Add("Content-Range", "bytes " + start + "-" + end + "/" + size);
+            Response.Headers.Add("Content-Length", length.ToString());
+            // Start buffered download
+            await Response.SendFileAsync(fullpath, fp, length);
+        
         }
 
     }

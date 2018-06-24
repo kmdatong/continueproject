@@ -31,7 +31,7 @@
             <td>
                 <a class="btn btn-link" onclick='return confirm("确定删除文件吗？")' href="@Url.Action("Delete",new { id=item.Id})">删除</a>
                 <a class="btn btn-link" href="@Url.Action("DownFlie",new { id=item.Id})">文件下载</a>
-                <a class="btn btn-link" href="@Url.Action("BreakpointDownload",new { id=item.Id})">片段下载</a>
+                <a class="btn btn-link" href="@Url.Action("RangeDownload",new { id=item.Id})">片段下载</a>
             </td>
             
         </tr>
