@@ -2,6 +2,7 @@
 @model IEnumerable<AccountModel>
 @{
     ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <a  class="btn btn-success"  style="margin:20px 0px 0 0px;"  href="@Url.Action("edit")">添加用户</a>
