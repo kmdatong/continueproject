@@ -1,0 +1,11 @@
+E:\myproject\githubProject\continueproject\WebApplication3\bin\Debug\netcoreapp2.0\WebApplication3.deps.json
+E:\myproject\githubProject\continueproject\WebApplication3\bin\Debug\netcoreapp2.0\WebApplication3.runtimeconfig.json
+E:\myproject\githubProject\continueproject\WebApplication3\bin\Debug\netcoreapp2.0\WebApplication3.runtimeconfig.dev.json
+E:\myproject\githubProject\continueproject\WebApplication3\bin\Debug\netcoreapp2.0\WebApplication3.dll
+E:\myproject\githubProject\continueproject\WebApplication3\bin\Debug\netcoreapp2.0\WebApplication3.pdb
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.csprojAssemblyReference.cache
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.csproj.CoreCompileInputs.cache
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.AssemblyInfoInputs.cache
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.AssemblyInfo.cs
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.dll
+E:\myproject\githubProject\continueproject\WebApplication3\obj\Debug\netcoreapp2.0\WebApplication3.pdb
